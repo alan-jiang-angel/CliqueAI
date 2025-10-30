@@ -13,20 +13,10 @@ import time
 # ---------------------------
 # Configuration
 # ---------------------------
-TIME_LIMIT_SECONDS = 30.0   # respond within 30 seconds as requested
+TIME_LIMIT_SECONDS = 25.0   # respond within 25 seconds as requested
 MAX_VERTICES = 1000         # safety cap (user said up to 500) - adjust if needed
 # ---------------------------
 
-def load_json_from_url(url: str):
-    """Download and parse JSON data from a remote URL."""
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching JSON from {url}: {e}")
-        raise
 
 # ---------------------------
 # Utilities: bitset representation
@@ -287,6 +277,13 @@ def parallel_max_clique(n, adj, time_limit=TIME_LIMIT_SECONDS):
     # return best found
     return shared_best.best_size, list(shared_best.best_clique)
 
+def bron_kerbosch_algorithm(number_of_nodes: int, adjacency_list: list[list[int]]) -> list[int]:
+    n, adj = graph_from_adjacency_list(adjacency_list)
+    size, clique = parallel_max_clique(number_of_nodes, adj, time_limit=TIME_LIMIT_SECONDS)
+    clique_sorted = sorted(clique)
+    
+    return clique_sorted
+
 # ---------------------------
 # Main: read input and run
 # ---------------------------
@@ -324,5 +321,16 @@ def main():
     print(f"Execution time: {end_time - start_time:.6f} seconds")
 
 
+def load_json_from_url(url: str):
+    """Download and parse JSON data from a remote URL."""
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching JSON from {url}: {e}")
+        raise
+    
 if __name__ == "__main__":
     main()

@@ -1,7 +1,8 @@
 import json
 
 from CliqueAI.clique_algorithms import (networkx_algorithm,
-                                        scattering_clique_algorithm)
+                                        scattering_clique_algorithm,
+                                        bron_kerbosch_algorithm)
 from CliqueAI.protocol import MaximumCliqueOfLambdaGraph
 
 data_paths = [
@@ -34,12 +35,13 @@ def check_clique(adjacency_list: list[list[int]], clique: list[int]) -> bool:
 
 
 def run(algorithm, synapse: MaximumCliqueOfLambdaGraph):
-    maximum_clique = algorithm(synapse)
+    maximum_clique = algorithm(synapse.number_of_nodes, synapse.adjacency_list)
     clique_check = check_clique(synapse.adjacency_list, maximum_clique)
     if not clique_check:
         print("Invalid clique found by algorithm!")
     else:
-        print(f"Clique size: {len(maximum_clique)}")
+        print(f"--- Clique size: {len(maximum_clique)} ---")
+        print(maximum_clique)
 
 
 def main():
@@ -47,7 +49,7 @@ def main():
         synapse = get_test_data(data_path)
         print(f"Testing data from {data_path} with {synapse.number_of_nodes} nodes")
         # put your algorithm here
-        run(scattering_clique_algorithm, synapse)
+        run(bron_kerbosch_algorithm, synapse)
 
 
 if __name__ == "__main__":

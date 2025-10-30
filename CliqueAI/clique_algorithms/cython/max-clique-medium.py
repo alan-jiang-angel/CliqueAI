@@ -310,7 +310,7 @@ def cubis_driver(adj_list, global_time_limit=30.0, parallel=True):
 
 # ------------------ Main ------------------
 def main():
-    data = load_json_path_or_url("https://raw.githubusercontent.com/toptensor/CliqueAI/refs/heads/main/test_data/general_0.4.json")
+    data = load_json_path_or_url("https://raw.githubusercontent.com/toptensor/CliqueAI/refs/heads/main/test_data/general_0.2.json")
     adj_list = data.get("adjacency_list")
 
     if adj_list is None:
