@@ -1,4 +1,4 @@
 from .gnn_algorithm import scattering_clique_algorithm
 from .networkx_algorithm import networkx_algorithm
 from .bron_kerbosch_algorithm import bron_kerbosch_algorithm
-# from .heuristic_cython import heuristic_cython_algorithm
+from .hybrid_algorithm import hybrid_algorithm
