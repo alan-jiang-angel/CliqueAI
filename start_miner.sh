@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MINER_NAME=miner-CliqueAI
+MINER_NAME=miner-cyc-clq-4
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for arg in "$@"; do
     MINER_ARGS="$MINER_ARGS $arg"

@@ -31,3 +31,6 @@ Exponential moving average algorithms continuously adjust miner reputation score
 ```
 ./start_validator.sh --wallet.name <coldkey-name> --wallet.hotkey <hotkey-name> --subtensor.network finney --netuid 83 --logging.info --axon.ip <your-validator-ip> --axon.port <your-validator-port>
 ```
+
+
+./start_miner.sh --wallet.name cyc --wallet.hotkey clq-3 --subtensor.network finney --netuid 83 --logging.info --axon.ip 23.88.6.235 --axon.port 8302

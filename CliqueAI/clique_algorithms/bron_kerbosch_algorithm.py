@@ -277,7 +277,7 @@ def parallel_max_clique(n, adj, time_limit=TIME_LIMIT_SECONDS):
     # return best found
     return shared_best.best_size, list(shared_best.best_clique)
 
-def bron_kerbosch_algorithm(number_of_nodes: int, adjacency_list: list[list[int]]) -> list[int]:
+def bron_kerbosch_algorithm(number_of_nodes: int, adjacency_list: list[list[int]], time_limit=TIME_LIMIT_SECONDS) -> list[int]:
     n, adj = graph_from_adjacency_list(adjacency_list)
     size, clique = parallel_max_clique(number_of_nodes, adj, time_limit=TIME_LIMIT_SECONDS)
     clique_sorted = sorted(clique)

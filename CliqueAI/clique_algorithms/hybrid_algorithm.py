@@ -26,7 +26,7 @@ def hybrid_algorithm(number_of_nodes, graph):
         result = sorted(clique)
     elif (number_of_nodes <= 300):
         n, adj = graph_from_adjacency_list(graph)
-        size, clique = parallel_max_clique(n, adj, time_limit=25)
+        size, clique = parallel_max_clique(n, adj, time_limit=20)
         result = sorted(clique)
 
         for i in range(5):
@@ -36,7 +36,7 @@ def hybrid_algorithm(number_of_nodes, graph):
                 result = result_cubis
     else:
         size, result = cubis_driver(graph, 25, True)
-        for i in range(25):
+        for i in range(20):
             # CUBIS
             size_new, result_new = cubis_driver(graph, 25, True)
             if size_new > size:

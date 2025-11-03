@@ -1,8 +1,10 @@
 import json
+import time
 
 from CliqueAI.clique_algorithms import (networkx_algorithm,
                                         scattering_clique_algorithm,
-                                        bron_kerbosch_algorithm)
+                                        bron_kerbosch_algorithm,
+                                        hybrid_algorithm)
 from CliqueAI.protocol import MaximumCliqueOfLambdaGraph
 
 data_paths = [
@@ -46,11 +48,13 @@ def run(algorithm, synapse: MaximumCliqueOfLambdaGraph):
 
 def main():
     for data_path in data_paths:
+        start_time = time.time()
         synapse = get_test_data(data_path)
         print(f"Testing data from {data_path} with {synapse.number_of_nodes} nodes")
         # put your algorithm here
-        run(bron_kerbosch_algorithm, synapse)
-
+        run(hybrid_algorithm, synapse)
+        end_time = time.time()
+        print(f"Time taken: {end_time - start_time:.2f} seconds\n")
 
 if __name__ == "__main__":
     main()
