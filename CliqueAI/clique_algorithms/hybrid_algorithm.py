@@ -8,6 +8,7 @@ from pathlib import Path
 import time
 
 from CliqueAI.clique_algorithms.cython.cubis import cubis_driver
+from CliqueAI.clique_algorithms.clisat_algorithm import clisat_algorithm
 from CliqueAI.clique_algorithms.bron_kerbosch_algorithm import parallel_max_clique, graph_from_adjacency_list
 
 def read_json(filepath):
@@ -19,34 +20,38 @@ def hybrid_algorithm(number_of_nodes, graph):
     print(f"🔹 Number of vertics in graph: {number_of_nodes}")
     result = []
 
+    t0 = time.time()
     if (number_of_nodes <= 100):
         # Hard Code
-        n, adj = graph_from_adjacency_list(graph)
-        size, clique = parallel_max_clique(n, adj, time_limit=25)
-        result = sorted(clique)
+        clique = clisat_algorithm(number_of_nodes, graph)
+        # n, adj = graph_from_adjacency_list(graph)
+        # size, clique = parallel_max_clique(n, adj, time_limit=25)
     elif (number_of_nodes <= 300):
-        n, adj = graph_from_adjacency_list(graph)
-        size, clique = parallel_max_clique(n, adj, time_limit=20)
-        result = sorted(clique)
-
-        for i in range(5):
-            size_cubis, result_cubis = cubis_driver(graph, 25, True)
-            if size_cubis > size:
-                size = size_cubis
-                result = result_cubis
+        clique = clisat_algorithm(number_of_nodes, graph, 20)
+        size = len(clique)
+        print(time.time()-t0, size)
+        while time.time() - t0 < 27:
+            size_new, result_new = cubis_driver(graph, 25, True)
+            print(size_new)
+            if size_new > size:
+                size = size_new
+                clique = result_new
+                print('found better one from cubis:', size)
     else:
-        size, result = cubis_driver(graph, 25, True)
-        for i in range(20):
-            # CUBIS
+        size, clique = cubis_driver(graph, 25, True)
+
+        while time.time() - t0 < 27:
             size_new, result_new = cubis_driver(graph, 25, True)
             if size_new > size:
                 size = size_new
-                result = result_new
+                clique = result_new
+                print('found better one from cubis:', size)
 
+    result = sorted(clique)
     return result
 
 def main():
-    base_path = Path("../../results")
+    base_path = Path("../../results2")
     input_files = sorted(base_path.glob("input_*.json"))
 
     better_vertics = []
@@ -70,13 +75,18 @@ def main():
 
         # Read input JSON
         input_data = read_json(input_file)
+        
         if (len(input_data) <= 100):
-            print("Skip --------------------------------------------------\n")
+            continue
+        elif (len(input_data) > 300):
             continue
 
+        t0 = time.time()
         # Execute dummy function
-        result = hybrid_algorithm(input_data)
-
+        result = hybrid_algorithm(len(input_data), input_data)
+        t1 = time.time() - t0
+        print(f"⏱️ Time taken: {t1:.2f} seconds")
+        
         # Read expected output JSON
         expected_output = read_json(output_file)
         

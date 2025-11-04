@@ -59,8 +59,8 @@ class Miner(BaseMinerNeuron):
 
 def save_result_to_json(input, maximum_clique):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename_input = f"results2/input_{timestamp}.json"
-    filename_result = f"results2/result_{timestamp}.json"
+    filename_input = f"results/input_{timestamp}.json"
+    filename_result = f"results/result_{timestamp}.json"
 
     # Save to JSON file
     with open(filename_input, "w") as f:

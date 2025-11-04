@@ -284,13 +284,25 @@ def bron_kerbosch_algorithm(number_of_nodes: int, adjacency_list: list[list[int]
     
     return clique_sorted
 
+
+import json
+def load_graph_from_json(path: str) -> dict[int, set[int]]:
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    return data
+
 # ---------------------------
 # Main: read input and run
 # ---------------------------
 def main():
     print(f"Reading Graph Data")
-    INPUT_JSON = load_json_from_url("https://raw.githubusercontent.com/toptensor/CliqueAI/refs/heads/main/test_data/general_0.2.json")
-    adj_list = INPUT_JSON.get("adjacency_list")
+    
+    adj_list = load_graph_from_json("../../results2/input_2025-11-02_17-57-20.json")
+    # print("Loaded graph with", len(graph), "vertices")
+    
+    # INPUT_JSON = load_json_from_url("https://raw.githubusercontent.com/toptensor/CliqueAI/refs/heads/main/test_data/general_0.2.json")
+    # adj_list = INPUT_JSON.get("adjacency_list")
 
     start_time = time.time()
 
@@ -321,16 +333,16 @@ def main():
     print(f"Execution time: {end_time - start_time:.6f} seconds")
 
 
-def load_json_from_url(url: str):
-    """Download and parse JSON data from a remote URL."""
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching JSON from {url}: {e}")
-        raise
+# def load_json_from_url(url: str):
+#     """Download and parse JSON data from a remote URL."""
+#     try:
+#         response = requests.get(url, timeout=10)
+#         response.raise_for_status()
+#         data = response.json()
+#         return data
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error fetching JSON from {url}: {e}")
+#         raise
     
 if __name__ == "__main__":
     main()
