@@ -33,4 +33,6 @@ Exponential moving average algorithms continuously adjust miner reputation score
 ```
 
 
-./start_miner.sh --wallet.name cyc --wallet.hotkey clq-3 --subtensor.network finney --netuid 83 --logging.info --axon.ip 23.88.6.235 --axon.port 8302 --blacklist.force_validator_permit true
+btcli subnet register --netuid 83 --wallet.name cyc --wallet.hotkey q2 --yes
+
+./start_miner.sh --wallet.name cyc --wallet.hotkey q3 --subtensor.network finney --netuid 83 --logging.info --axon.ip 23.88.6.235 --axon.port 8303 --blacklist.force_validator_permit true

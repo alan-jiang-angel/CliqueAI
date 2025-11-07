@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MINER_NAME=miner-cyc-clq-4
+MINER_NAME=miner-q3
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for arg in "$@"; do
     MINER_ARGS="$MINER_ARGS $arg"
@@ -16,9 +16,9 @@ cd "$PROJECT_ROOT"
 # source "$VENV_DIR/bin/activate"
 # pip install -e .
 
-if pm2 list | grep -q "$MINER_NAME"; then
-    pm2 delete "$MINER_NAME" 2>/dev/null || true
-fi
+# if pm2 list | grep -q "$MINER_NAME"; then
+#     pm2 delete "$MINER_NAME" 2>/dev/null || true
+# fi
 
 pm2 start python3 --name "$MINER_NAME" -- \
     -m CliqueAI.miner \

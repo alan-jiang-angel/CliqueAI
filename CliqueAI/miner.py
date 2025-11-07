@@ -4,7 +4,8 @@ from datetime import datetime
 import json
 
 import bittensor as bt
-from CliqueAI.clique_algorithms import networkx_algorithm, scattering_clique_algorithm, bron_kerbosch_algorithm, hybrid_algorithm
+# from CliqueAI.clique_algorithms import networkx_algorithm, scattering_clique_algorithm, bron_kerbosch_algorithm, 
+from CliqueAI.clique_algorithms import hybrid_algorithm
 from CliqueAI.graph.codec import GraphCodec
 from CliqueAI.protocol import MaximumCliqueOfLambdaGraph
 from common.base.miner import BaseMinerNeuron
@@ -65,7 +66,7 @@ def save_result_to_json(input, maximum_clique):
     # Save to JSON file
     with open(filename_input, "w") as f:
         json.dump(input, f, indent=4)
-    
+
     with open(filename_result, "w") as f:
         json.dump(maximum_clique, f, indent=4)
 
