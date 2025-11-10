@@ -35,4 +35,7 @@ Exponential moving average algorithms continuously adjust miner reputation score
 
 btcli subnet register --netuid 83 --wallet.name cyc --wallet.hotkey q2 --yes
 
+pm2 start --name "cyc-q3" "python -m CliqueAI.miner --wallet.name cyc --wallet.hotkey q3 --subtensor.network finney --netuid 83 --logging.info --axon.ip 23.88.6.235 --axon.port 8303 --blacklist.force_validator_permit true"
+
+
 ./start_miner.sh --wallet.name cyc --wallet.hotkey q3 --subtensor.network finney --netuid 83 --logging.info --axon.ip 23.88.6.235 --axon.port 8303 --blacklist.force_validator_permit true

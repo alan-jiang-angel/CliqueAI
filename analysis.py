@@ -3,7 +3,7 @@ import pandas as pd
 import datetime
 import time
 
-UIDS = [177, 172, 161, 181, 107]
+UIDS = [217, 235, 246, 181, 223]
 
 # ff3cc6ddf11ad82a38910e0750e8a803014cf51d
 # authenticate
@@ -16,10 +16,11 @@ def getRunInfo(run_id):
 
     # --- BASIC RUN INFO ---
     # print("🔹 Basic Info")
-    # print("Name:", run.name)
+    print("Name:", run.name)
     # print("ID:", run.id)
     # print("State:", run.state)
 
+    # if run.state == 'finished':
     if run.state == 'running':
         for uid in UIDS:
             try:
@@ -32,16 +33,16 @@ def getRunInfo(run_id):
 
             better_count = 0
             better_answer = []
-            
+
             for a in run.summary.miner_ans:
                 if len(a) > my_answer:
                     better_count += 1
                     better_answer = a
-            
+
             if better_count > 0:
                 print(f"❌ {dt} Uid: {run.summary.miner_uids[idx]}, difficulty: {run.summary.difficulty}, Answer: {my_answer}, Reward: {run.summary.miner_rewards[idx]}, RID: {run.id}")
                 print(f"- {better_count} are better than me out of {len(run.summary.miner_ans)} miners")
-                print(run.summary.adjacency_list.value)
+                # print(run.summary.adjacency_list.value)
                 print(my_answer, run.summary.miner_ans[idx])
                 better_answer.sort()
                 print(len(better_answer), better_answer)
@@ -64,10 +65,10 @@ while(True):
         # print(f"State: {run.state}")
         # print(f"Created at: {run.created_at}")
         getRunInfo(run.id)
-        
+
     print("-" * 60)
-    time.sleep(10)
-    
+    time.sleep(600)
+
 # # list artifacts for that run
 # artifacts = run.logged_artifacts()
 # for art in artifacts:

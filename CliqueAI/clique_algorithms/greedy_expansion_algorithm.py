@@ -102,8 +102,8 @@ def approximate_max_clique(adj, top_k=200, beam_width=3):
     search_nodes = nodes_by_degree[:top_k]
 
     best = []
-
-    with Pool(cpu_count()) as pool:
+    # with Pool(cpu_count()) as pool:
+    with Pool(12) as pool:
         tasks = [(adj, start, beam_width) for start in search_nodes]
 
         for clique in pool.imap_unordered(run_clique, tasks):
@@ -111,7 +111,6 @@ def approximate_max_clique(adj, top_k=200, beam_width=3):
                 best = clique
 
     return sorted(best)
-
 
 def greedy_expansion_algorithm(number_of_nodes, graph):
     adj = load_adjlist(graph)
