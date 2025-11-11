@@ -1,7 +1,18 @@
 import json
 import random
 from multiprocessing import Pool, cpu_count
+import networkx as nx
 
+def graph_density_from_adjlist(adj_list):
+    G = nx.Graph()
+
+    for node, neighbors in enumerate(adj_list):
+        for neighbor in neighbors:
+            G.add_edge(node, neighbor)
+
+    density = nx.density(G)
+    print(f"Graph density: {density:.4f}")
+    return density
 
 # --------------------------------------------------------
 # Load adjacency list from JSON → convert to bitmask only
@@ -102,8 +113,8 @@ def approximate_max_clique(adj, top_k=200, beam_width=3):
     search_nodes = nodes_by_degree[:top_k]
 
     best = []
-    # with Pool(cpu_count()) as pool:
-    with Pool(12) as pool:
+    with Pool(cpu_count()) as pool:
+    # with Pool(12) as pool:
         tasks = [(adj, start, beam_width) for start in search_nodes]
 
         for clique in pool.imap_unordered(run_clique, tasks):
@@ -114,7 +125,37 @@ def approximate_max_clique(adj, top_k=200, beam_width=3):
 
 def greedy_expansion_algorithm(number_of_nodes, graph):
     adj = load_adjlist(graph)
-    clique = approximate_max_clique(adj, top_k=300, beam_width=80)
+
+    if number_of_nodes <= 100:
+        top_k = 100
+        beam_width = 100
+    elif number_of_nodes <= 300:
+        # performance first, for level-2
+        top_k = 200
+        beam_width = 80
+        density = graph_density_from_adjlist(graph)
+
+        if (density >= 0.94):
+            beam_width = 30
+        elif (density >= 0.90):
+            beam_width = 40
+        elif (density >= 0.86):
+            beam_width = 60
+
+    else:
+        # speed first, for level-4
+        top_k = 300
+        beam_width = 30
+        density = graph_density_from_adjlist(graph)
+        if (density >= 0.94):
+            beam_width = 10
+        elif (density >= 0.90):
+            beam_width = 15
+        elif (density >= 0.86):
+            beam_width = 20
+
+    clique = approximate_max_clique(adj, top_k, beam_width)
+
     return sorted(clique)
 
 
@@ -122,7 +163,7 @@ def greedy_expansion_algorithm(number_of_nodes, graph):
 # Main
 # --------------------------------------------------------
 # if __name__ == "__main__":
-    
+
     # adj = load_adjlist(path)
     # clique = approximate_max_clique(adj, top_k=300, beam_width=50)
 

@@ -3,6 +3,7 @@
 # Use new method for 10X times and return best one <= 500
 
 import os
+import sys
 import json
 from pathlib import Path
 import time
@@ -25,8 +26,15 @@ def hybrid_algorithm(number_of_nodes, graph):
     t0 = time.time()
     if (number_of_nodes <= 100):
         # Hard Code
+        to = time.time()
         clique = clisat_algorithm(number_of_nodes, graph)
+        t1 = time.time() - t0
+        print(f"⏱️ Time taken for CliSAT Algorithm: {t1:.2f} seconds, size {len(clique)}")
+        
+        to = time.time()
         clique2 = greedy_expansion_algorithm(number_of_nodes, graph)
+        t1 = time.time() - t0
+        print(f"⏱️ Time taken for Greedy Algorithm: {t1:.2f} seconds, size {len(clique)}")
         
         if (len(clique2) > len(clique)):
             clique = clique2
@@ -44,11 +52,18 @@ def hybrid_algorithm(number_of_nodes, graph):
         #         clique = result_new
         #         print('found better one from cubis:', size)
     else:
+        t0 = time.time()
         clique = greedy_expansion_algorithm(number_of_nodes, graph)
         size = len(clique)
+        t1 = time.time() - t0
+        print(f"⏱️ Time taken for Greedy Algorithm: {t1:.2f} seconds, size {size}")
 
-        for _ in range(100):
+        for _ in range(10):
+            t0 = time.time()
             size_new, result_new = cubis_driver(graph, 25, True)
+            t1 = time.time() - t0
+            print(f"⏱️ Time taken for Cubis Algorithm: {t1:.2f} seconds, size {size_new}")
+
             if size_new > size:
                 size = size_new
                 clique = result_new
@@ -58,7 +73,11 @@ def hybrid_algorithm(number_of_nodes, graph):
     return result
 
 def main():
-    input_file = "../test_data/level-2-41.json"
+    if len(sys.argv) < 2:
+        print("Usage: python test-single.py <path>")
+        sys.exit(1)
+    
+    input_file = sys.argv[1]
     print(f"🔹 Processing {input_file}")
 
     # Read input JSON
@@ -67,8 +86,7 @@ def main():
     t0 = time.time()
     # Execute dummy function
     result = hybrid_algorithm(len(input_data), input_data)
-    t1 = time.time() - t0
-    print(f"⏱️ Time taken: {t1:.2f} seconds")
+    
 
     print(f"🔹 Result clique size: {len(result)}")
 

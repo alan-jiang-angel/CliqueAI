@@ -46,7 +46,8 @@ def hybrid_algorithm(number_of_nodes, graph):
         clique = greedy_expansion_algorithm(number_of_nodes, graph)
         size = len(clique)
 
-        while time.time() - t0 < 25:
+        # while time.time() - t0 < 25:
+        for _ in range(10):
             size_new, result_new = cubis_driver(graph, 25, True)
             if size_new > size:
                 size = size_new
@@ -57,7 +58,7 @@ def hybrid_algorithm(number_of_nodes, graph):
     return result
 
 def main():
-    base_path = Path("../../results3")
+    base_path = Path("../../results4")
     input_files = sorted(base_path.glob("input_*.json"))
 
     better_vertics = []

@@ -6,6 +6,7 @@ import os
 import json
 from pathlib import Path
 import time
+import random
 
 from CliqueAI.clique_algorithms.cython.cubis import cubis_driver
 from CliqueAI.clique_algorithms.clisat_algorithm import clisat_algorithm
@@ -51,7 +52,8 @@ def hybrid_algorithm(number_of_nodes, graph):
         clique = greedy_expansion_algorithm(number_of_nodes, graph)
         size = len(clique)
 
-        while time.time() - t0 < 27:
+        for _ in range(10):
+        # while time.time() - t0 < 27:
             size_new, result_new = cubis_driver(graph, 25, True)
             if size_new > size:
                 size = size_new
@@ -62,8 +64,17 @@ def hybrid_algorithm(number_of_nodes, graph):
     return result
 
 def main():
-    base_path = Path("../live_data/results1")
-    input_files = sorted(base_path.glob("input_*.json"))
+    # base_path = Path("../live_data/results2")
+    # files = base_path.glob("input_*.json")
+    
+    base_path = "../live_data/results4/"
+    
+    input_files = [
+        f
+        for f in os.listdir(base_path)
+        if os.path.isfile(os.path.join(base_path, f)) and f.startswith("input_") and f.endswith(".json")
+    ]
+    random.shuffle(input_files)
 
     # better_vertics = []
     # poor_vertics = []
@@ -73,20 +84,19 @@ def main():
     
     for input_file in input_files:
         # Extract timestamp suffix (everything after 'input')
-        suffix = input_file.stem.replace("input_", "", 1)
-        output_file = base_path / f"result_{suffix}.json"
-        # better_file = base_path / f"result_{suffix}_better.json"
+        suffix = input_file.replace("input_", "", 1)
+        output_file = f"result_{suffix}"
 
         print(f"✅ Match for {suffix} ---")
 
-        if not output_file.exists():
-            print(f"⚠️ No matching output file for: {input_file.name}")
+        if not os.path.isfile(base_path + output_file):
+            print(f"⚠️ No matching output file for: {input_file}")
             continue
 
-        print(f"🔹 Processing {input_file.name} ↔ {output_file.name}")
+        print(f"🔹 Processing {input_file} ↔ {output_file}")
 
         # Read input JSON
-        input_data = read_json(input_file)
+        input_data = read_json(base_path + input_file)
         
         if (len(input_data) <= 100):
             continue
@@ -100,11 +110,11 @@ def main():
         print(f"⏱️ Time taken: {t1:.2f} seconds")
 
         # Read expected output JSON
-        expected_output = read_json(output_file)
+        expected_output = read_json(base_path + output_file)
         
         if (len(result) > len(expected_output)):
             print(f"🔥 Better result! New: {len(result)}, Expected: {len(expected_output)}")
-            write_json(output_file, result)
+            write_json(base_path + output_file, result)
 
             # better_count += 1
             # better_vertics.append(len(input_data))
