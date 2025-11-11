@@ -114,7 +114,7 @@ def approximate_max_clique(adj, top_k=200, beam_width=3):
 
 def greedy_expansion_algorithm(number_of_nodes, graph):
     adj = load_adjlist(graph)
-    clique = approximate_max_clique(adj, top_k=300, beam_width=50)
+    clique = approximate_max_clique(adj, top_k=300, beam_width=80)
     return sorted(clique)
 
 
