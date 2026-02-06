@@ -2,10 +2,11 @@ import time
 import typing
 
 import bittensor as bt
-from CliqueAI.clique_algorithms import networkx_algorithm, scattering_clique_algorithm
+# from CliqueAI.clique_algorithms import networkx_algorithm, scattering_clique_algorithm
 from CliqueAI.graph.codec import GraphCodec
 from CliqueAI.protocol import MaximumCliqueOfLambdaGraph
 from common.base.miner import BaseMinerNeuron
+from CliqueAI.clique_algorithms import hybrid_algorithm
 
 
 class Miner(BaseMinerNeuron):
@@ -31,9 +32,13 @@ class Miner(BaseMinerNeuron):
         codec = GraphCodec()
         adjacency_matrix = codec.decode_matrix(synapse.encoded_matrix)
         adjacency_list = codec.matrix_to_list(adjacency_matrix)
-        maximum_clique: list[int] = networkx_algorithm(synapse.number_of_nodes, adjacency_list)
+        # maximum_clique: list[int] = networkx_algorithm(synapse.number_of_nodes, adjacency_list)
         # or use GNN models
         # maximum_clique = scattering_clique_algorithm(synapse.number_of_nodes, adjacency_list)
+        
+        maximum_clique: list[int] = hybrid_algorithm(synapse.number_of_nodes, adjacency_list)
+        save_result_to_json(adjacency_list, maximum_clique)
+
         bt.logging.info(
             f"Maximum clique found: {maximum_clique} with size {len(maximum_clique)}"
         )
@@ -47,6 +52,19 @@ class Miner(BaseMinerNeuron):
 
     async def priority_graph(self, synapse: MaximumCliqueOfLambdaGraph) -> float:
         return await self.priority(synapse)
+
+
+def save_result_to_json(input, maximum_clique):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename_input = f"results/input_{timestamp}.json"
+    filename_result = f"results/result_{timestamp}.json"
+
+    # Save to JSON file
+    with open(filename_input, "w") as f:
+        json.dump(input, f, indent=4)
+
+    with open(filename_result, "w") as f:
+        json.dump(maximum_clique, f, indent=4)
 
 
 if __name__ == "__main__":

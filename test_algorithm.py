@@ -1,7 +1,8 @@
 import json
 
 from CliqueAI.clique_algorithms import (networkx_algorithm,
-                                        scattering_clique_algorithm)
+                                        scattering_clique_algorithm,
+                                        hybrid_algorithm)
 from CliqueAI.graph.codec import GraphCodec
 from CliqueAI.protocol import MaximumCliqueOfLambdaGraph
 
@@ -51,7 +52,7 @@ def main():
         synapse = get_test_data(data_path)
         print(f"Testing data from {data_path} with {synapse.number_of_nodes} nodes")
         # put your algorithm here
-        run(scattering_clique_algorithm, synapse)
+        run(hybrid_algorithm, synapse)
 
 
 if __name__ == "__main__":
