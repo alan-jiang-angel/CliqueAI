@@ -166,10 +166,17 @@ def run_30s_solver(adj):
 
     node_len = len(adj)
 
-    top_k = node_len * 2 // 5
-    max_beam = max(4, node_len // 20)
+    if (node_len > 500):
+        top_k = node_len * 2 // 7
+    else:
+        top_k = node_len * 2 // 5
 
-    TIME_LIMIT = 15.0
+    if (node_len > 500):
+        max_beam = max(4, node_len // 25)
+    else:
+        max_beam = max(4, node_len // 20)
+
+    TIME_LIMIT = 20.0
 
     start_time = time.perf_counter()
     deadline = start_time + TIME_LIMIT

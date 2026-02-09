@@ -85,10 +85,10 @@ def main():
         # Read input JSON
         input_data = read_json(input_file)
         
-        if (len(input_data) <= 100):
+        if (len(input_data) <= 500):
             continue
         # elif (len(input_data) > 300):
-        #     continue
+            # continue
 
         t0 = time.time()
         # Execute dummy function
