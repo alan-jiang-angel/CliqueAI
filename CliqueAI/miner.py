@@ -61,10 +61,10 @@ def save_result_to_json(input, maximum_clique):
 
     # Save to JSON file
     with open(filename_input, "w") as f:
-        json.dump(input, f, indent=4)
+        json.dump(input, f, separators=(",", ":"), ensure_ascii=False, sort_keys=False)
 
     with open(filename_result, "w") as f:
-        json.dump(maximum_clique, f, indent=4)
+        json.dump(maximum_clique, f, separators=(",", ":"), ensure_ascii=False, sort_keys=False)
 
 
 if __name__ == "__main__":

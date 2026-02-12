@@ -187,7 +187,6 @@ def run_30s_solver(adj):
     run_id = 0
 
     while True:
-
         now = time.perf_counter()
 
         if times:
@@ -195,6 +194,10 @@ def run_30s_solver(adj):
             if now + avg >= deadline:
                 break
         elif now >= deadline:
+            break
+        
+        # Do not over run
+        if run_id > 30:
             break
 
         run_id += 1
