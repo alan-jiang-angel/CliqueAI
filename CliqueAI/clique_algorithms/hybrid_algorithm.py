@@ -77,6 +77,7 @@ def do_work(hash, number_of_nodes, graph, timestamp):
     with open(output_file, "w") as f:
         json.dump(clique, f, indent=2)
 
+    r.set(f"{LOCK_KEY}:timestamp", timestamp, ex=30)
     r.publish(DONE_KEY, "done")
     r.delete(LOCK_KEY)
     print(f"[{hash}] Done.")
@@ -103,6 +104,9 @@ def wait_for_result(hash, timestamp):
         if message["type"] == "message":
             break
 
+    ot = r.get(f"{LOCK_KEY}:timestamp")
+    return ot.decode() if ot else None
+
 
 def hybrid_algorithm(number_of_nodes, graph, timestamp):
     print(f"🔹 Number of vertics in graph: {number_of_nodes}")
@@ -118,7 +122,8 @@ def hybrid_algorithm(number_of_nodes, graph, timestamp):
     if try_become_leader(hash_val):
         do_work(hash_val, number_of_nodes, graph, timestamp)
     else:
-        wait_for_result(hash_val, timestamp)
+        ot = wait_for_result(hash_val, timestamp)
+        timestamp = ot if ot else timestamp
 
     output_file = BASE_PATH / f"result_{timestamp}.json"
     clique = read_json(output_file)
