@@ -16,3 +16,7 @@ ingest.py
 
 Analyzer
     - Check redis to see how much graphs are re used
+
+
+
+OVERALL: Not that helpful

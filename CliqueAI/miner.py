@@ -40,7 +40,7 @@ class Miner(BaseMinerNeuron):
 
         save_input_to_json(adjacency_list, timestamp)
         maximum_clique: list[int] = hybrid_algorithm(synapse.number_of_nodes, adjacency_list, timestamp)
-        save_result_to_json(maximum_clique, timestamp)
+        # save_result_to_json(maximum_clique, timestamp)
 
         bt.logging.info(
             f"Maximum clique found: {maximum_clique} with size {len(maximum_clique)}"
