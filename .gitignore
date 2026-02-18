@@ -171,3 +171,7 @@ bittensor_test/
 .secrets
 
 results/
+old_data/
+old_data1/
+old_data2/
+old_data3/

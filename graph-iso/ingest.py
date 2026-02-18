@@ -8,7 +8,7 @@ from tqdm import tqdm
 # CONFIGURATION
 # =========================
 
-DATA_DIR = "/root/works/CliqueAI/results/"          # Folder containing json files
+DATA_DIR = "/root/works/CliqueAI/old_data/"          # Folder containing json files
 INDEXER_PATH = "./indexer"    # Your compiled bliss indexer
 REDIS_HOST = "localhost"
 REDIS_PORT = 6379

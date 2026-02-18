@@ -36,8 +36,11 @@ class Miner(BaseMinerNeuron):
         # or use GNN models
         # maximum_clique = scattering_clique_algorithm(synapse.number_of_nodes, adjacency_list)
         
-        maximum_clique: list[int] = hybrid_algorithm(synapse.number_of_nodes, adjacency_list)
-        save_result_to_json(adjacency_list, maximum_clique)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+        save_input_to_json(adjacency_list, timestamp)
+        maximum_clique: list[int] = hybrid_algorithm(synapse.number_of_nodes, adjacency_list, timestamp)
+        save_result_to_json(maximum_clique, timestamp)
 
         bt.logging.info(
             f"Maximum clique found: {maximum_clique} with size {len(maximum_clique)}"
@@ -54,15 +57,18 @@ class Miner(BaseMinerNeuron):
         return await self.priority(synapse)
 
 
-def save_result_to_json(input, maximum_clique):
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename_input = f"results/input_{timestamp}.json"
+def save_input_to_json(input, timestamp):
+    filename = f"results/input_{timestamp}.json"
+
+    # Save to JSON file
+    with open(filename, "w") as f:
+        json.dump(input, f, separators=(",", ":"), ensure_ascii=False, sort_keys=False)
+
+
+def save_result_to_json(maximum_clique, timestamp):
     filename_result = f"results/result_{timestamp}.json"
 
     # Save to JSON file
-    with open(filename_input, "w") as f:
-        json.dump(input, f, separators=(",", ":"), ensure_ascii=False, sort_keys=False)
-
     with open(filename_result, "w") as f:
         json.dump(maximum_clique, f, separators=(",", ":"), ensure_ascii=False, sort_keys=False)
 

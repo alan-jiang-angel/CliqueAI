@@ -22,7 +22,7 @@ results.sort(key=lambda x: x[1], reverse=True)
 subcount = 0
 # Print results
 for sha, count in results:
-    if (count > 2):
+    if (count > 1):
         subcount += 1
         print(f"{sha} -> {count}")
 
